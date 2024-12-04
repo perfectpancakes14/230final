@@ -5,7 +5,12 @@ if(count($_POST)>0){
     if(!isset($_POST['email'][0])) die('You must enter your email.');
     if(!isset($_POST['password'][0])) die('You must enter your password.');
     if(strlen($error)==0){
-        $fp=fopen('users.csv.php','r');
+		$stmt = $pdo->prepare('SELECT email FROM users WHERE email = ? AND password = ?');
+		$stmt->execute([$_POST['email'],$_POST['password']]);
+		$user = $stmt->fetch();
+		//start here next by checking to see if there was any value returned at all
+		
+        /*$fp=fopen('users.csv.php','r');
         while(!feof($fp)){
             $line=fgets($fp);
             $line=explode(';',trim($line));
@@ -15,7 +20,7 @@ if(count($_POST)>0){
                 header('location: entity/index.php');
                 die();
             }
-        }
+        }*/
         echo "Email or Password incorrect. Please try again.";
     }
 }
