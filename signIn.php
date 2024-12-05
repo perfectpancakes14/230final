@@ -1,14 +1,19 @@
 <?php
+require_once("db.php");
 session_start();
 $error='';
 if(count($_POST)>0){
     if(!isset($_POST['email'][0])) die('You must enter your email.');
     if(!isset($_POST['password'][0])) die('You must enter your password.');
     if(strlen($error)==0){
-		$stmt = $pdo->prepare('SELECT email FROM users WHERE email = ? AND password = ?');
+		$stmt = $db->prepare('SELECT email FROM users WHERE email = ? AND password = ?');
 		$stmt->execute([$_POST['email'],$_POST['password']]);
 		$user = $stmt->fetch();
-		echo $user;
+		if($user!=""){
+			$_SESSION['email']=$user;
+			header('location: entity/index.php');
+			die();
+		}
 		//start here next by checking to see if there was any value returned at all
 		
         /*$fp=fopen('users.csv.php','r');
