@@ -8,6 +8,7 @@ if(count($_POST)>0){
 		$stmt = $pdo->prepare('SELECT email FROM users WHERE email = ? AND password = ?');
 		$stmt->execute([$_POST['email'],$_POST['password']]);
 		$user = $stmt->fetch();
+		echo $user;
 		//start here next by checking to see if there was any value returned at all
 		
         /*$fp=fopen('users.csv.php','r');
