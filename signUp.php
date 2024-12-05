@@ -5,7 +5,18 @@ if(count($_POST)>0){
     if(!isset($_POST['email'][0])) die('You must enter your email.');
     if(!isset($_POST['password'][0])) die('You must enter your password.');
     if(strlen($error)==0){
-        $fp=fopen('users.csv.php','r');
+		$stmt = $db->prepare('SELECT email FROM users WHERE email = ?');
+		$stmt->execute([$_POST['email']]);
+		$prevUser = $stmt->fetch();
+		if($prevUser!=""){
+			$error='This user is already registered.';
+			echo $error;
+			break;
+		}
+		if(strlen($error)==0){
+			//begin here by adding the email and password of the new user
+			
+        /*$fp=fopen('users.csv.php','r');
         while(!feof($fp)){
             $line=fgets($fp);
             $line=explode(';',$line);
@@ -22,7 +33,7 @@ if(count($_POST)>0){
             fclose($fp);
             header('location: entity/index.php');
             die();
-        }
+        }*/
     }
 }
 ?>
