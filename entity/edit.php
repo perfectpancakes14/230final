@@ -1,16 +1,33 @@
 <?php
+require_once("../db.php");
+$error='';
 session_start();
 $i = $_GET['post_id'];
 
 if(!isset($_SESSION['email']))
-    {
-        header('location: ../index.php');
-        die();
-    }
+{
+    header('location: ../index.php');
+    die();
+}
+$stmt = $db->prepare('SELECT title, contents FROM posts WHERE postID = ?');
+$stmt->execute([$i]);
+$post = $stmt->fetch();
 
 if(count($_POST)>0){
+    
 
-    $posts = [];
+    $temp = $_POST['content'];
+    $content = str_replace(["\r", "\n"], " ", $temp);
+    $date_time = date('Y-m-d H:i:s');
+    if(strlen($error)==0){
+		$stmt = $db->prepare('UPDATE posts SET title = ?, contents = ? WHERE postID = ?');
+		$stmt->execute([$_POST['title'], $content, $i]);
+    }
+    header('location: index.php');
+    //die();
+
+
+    /*$posts = [];
     $fp=fopen('posts.csv.php','r');
     while(!feof($fp)){
         $line=fgets(($fp));
@@ -32,7 +49,7 @@ if(count($_POST)>0){
     }
     fclose($fp);
     header('location: index.php');
-    die();
+    die();*/
 
 }
 
@@ -132,10 +149,10 @@ if(count($_POST)>0){
 
         <form method="POST">
             <label><h3>Title</h3></label><br />
-            <textarea name="title" rows="1" cols="50" required="required" ></textarea>
+            <textarea name="title" rows="1" cols="50" placeholder="<?= $post[0] ?>" required="required" ></textarea>
             <br /><br />
             <label><h3>Contents</h3></label><br />
-			<textarea name="content" rows="9" cols="50" required="required"></textarea>
+			<textarea name="content" rows="9" cols="50" placeholder="<?= $post[1] ?>" required="required"></textarea>
             <br /><br />
             <button type="submit" class="btn btn-all">Edit Post</button>
         </form> 

@@ -1,4 +1,6 @@
 <?php
+
+require_once("../db.php");
     session_start();
 
     $i = $_GET['post_id'];
@@ -8,8 +10,9 @@
         header('location: ../index.php');
         die();
     }
-
-    $posts = [];
+    $stmt = $db->prepare('DELETE FROM posts WHERE postID = ?');
+    $stmt->execute([$i]);
+    /*$posts = [];
     $fp=fopen('posts.csv.php','r');
     while(!feof($fp)){
         $line=fgets(($fp));
@@ -28,7 +31,7 @@
         $line = implode(';', $posts[$j]);
         fwrite($fp,$line);
     }
-    fclose($fp);
+    fclose($fp);*/
 ?>
 
 
