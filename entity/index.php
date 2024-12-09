@@ -1,11 +1,6 @@
 <?php
+require_once("db.php");
 session_start();
-
-if(!isset($_SESSION['email']))
-{
-    header('location: ../index.php');
-    die();
-}
 
 $posts = [];
 $fp=fopen('posts.csv.php','r');
@@ -92,7 +87,10 @@ array_splice($posts, count($posts)-1, 1);
                             <div class="hero-slider-content">
                                 <h4 class="slide-subtitle pb-3">Blogging and Social Media Site</h4>
                                 <h2 class="slide-title">Karen Social</h2>
+								<?php
+								if(isset($_SESSION['email'])){ ?>
                                 <a href="create.php" class="btn btn-all">Create Post</a>
+								<?php } ?>
                             </div>
 						</div>
                     </div>
