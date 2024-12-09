@@ -35,14 +35,14 @@ if(count($_POST)>0){
                 break;
             }    
         }
-        fclose($fp);
+        fclose($fp);*/
         if(strlen($error)==0){
             $fp=fopen('users.csv.php','a+');
             fputs($fp,$_POST['email'].';'.password_hash($_POST['password'],PASSWORD_DEFAULT).PHP_EOL);
             fclose($fp);
             header('location: entity/index.php');
             die();
-        }*/
+        }
     }
 }
 ?>
