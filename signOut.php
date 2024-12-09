@@ -6,7 +6,7 @@ session_destroy();
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Sign In</title>
+    <title>Sign Out</title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -27,10 +27,40 @@ session_destroy();
     <link rel="stylesheet" href="assets/css/plugins/animate.css">
     <!-- main style css -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <h2>Successfully Signed Out</h2>
-    </head>
-    <body>
-        <p>See you later!</p>
-        <a href='index.php' class="btn btn-all">Back to Sign In Page</a>
-    </body>
+	
+	<!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+        w[l] = w[l] || []; w[l].push({
+            'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+        }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-5JCTSSF');</script>
+    <!-- End Google Tag Manager -->
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5JCTSSF" height="0" width="0"
+        style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <main>
+        <!-- section start -->
+        <section class="main-menu-wrapper section-padding pb-10">
+                <div class="container custom-container">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-6">
+                            <div class="hero-slider-content">
+                                <h4 class="slide-subtitle pb-3">See you later!</h4>
+								<h2 class="slide-title">Successfully Signed Out</h2></br>
+                            </div>
+							<a href='index.php' class="btn btn-all">Back to Sign In Page</a>
+						</div>
+                    </div>
+                </div>
+        </section>
+	</main>
+</body>
 </html>

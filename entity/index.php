@@ -1,22 +1,6 @@
 <?php
+require_once("db.php");
 session_start();
-
-if(!isset($_SESSION['email']))
-{
-    header('location: ../index.php');
-    die();
-}
-
-$posts = [];
-$fp=fopen('posts.csv.php','r');
-while(!feof($fp)){
-    $line=fgets(($fp));
-    $line=explode(';',$line);
-    array_push($posts, $line);
-}
-fclose($fp);
-array_splice($posts,0,1);
-array_splice($posts, count($posts)-1, 1);
 ?>
 <html class="no-js" lang="zxx">
 
@@ -92,7 +76,10 @@ array_splice($posts, count($posts)-1, 1);
                             <div class="hero-slider-content">
                                 <h4 class="slide-subtitle pb-3">Blogging and Social Media Site</h4>
                                 <h2 class="slide-title">Karen Social</h2>
+								<?php
+								if(isset($_SESSION['email'])){ ?>
                                 <a href="create.php" class="btn btn-all">Create Post</a>
+								<?php } ?>
                             </div>
 						</div>
                     </div>
@@ -114,6 +101,7 @@ array_splice($posts, count($posts)-1, 1);
                 <div class="row mtn-50">
                     <!-- demo single item start -->
 					<?php 
+					$stmt = $db->prepare("SELECT TOP 9 title FROM posts ORDER BY DESC")
                     $counter = 0;
                     $mostRecent = count($posts)-1;
                     while($counter<9 && array_key_exists($mostRecent,$posts)){

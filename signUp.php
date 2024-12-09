@@ -1,10 +1,30 @@
 <?php
+require_once("db.php");
 session_start();
 $error='';
 if(count($_POST)>0){
     if(!isset($_POST['email'][0])) die('You must enter your email.');
     if(!isset($_POST['password'][0])) die('You must enter your password.');
     if(strlen($error)==0){
+		$stmt = $db->prepare('SELECT email FROM users WHERE email = ?');
+		$stmt->execute([$_POST['email']]);
+		$prevUser = $stmt->fetch();
+		if($prevUser!=""){
+			$error='This user is already registered.';
+			echo $error;
+		}
+		if(strlen($error)==0){
+			$addUser = $db->prepare('INSERT INTO users(email, password, firstName, lastName, isAdmin) VALUES (?, ?, ?, ?, ?)');
+			if($_POST['adminPassword']==123123123){
+				$addUser->execute([$_POST['email'],$_POST['password'],$_POST['firstName'],$_POST['lastName'],1]);
+			}
+			else{
+				$addUser->execute([$_POST['email'],$_POST['password'],$_POST['firstName'],$_POST['lastName'],0]);
+			}
+			header('location: entity/index.php');
+			die();
+		}
+			
         /*$fp=fopen('users.csv.php','r');
         while(!feof($fp)){
             $line=fgets($fp);
@@ -51,7 +71,8 @@ if(count($_POST)>0){
     <link rel="stylesheet" href="assets/css/plugins/animate.css">
     <!-- main style css -->
     <link rel="stylesheet" href="assets/css/style.css">
-    <h2>Register for Karen Social</h2><br>
+    <h2>Register for Karen Social</h2>
+	<p>* for required fields</p><br>
     </head>
     <style>
         body{
@@ -60,11 +81,16 @@ if(count($_POST)>0){
     </style>
     <body>
         <form method="POST">
-            <label><h3>Email</h3></label>
+            <label><h3>*Email</h3></label>
             <input name="email" type="email"/><br><br>
-            <label><h3>Password</h3></label>
-            <input name="password" type="password"/>
-            <br><br>
+            <label><h3>*Password</h3></label>
+            <input name="password" type="password"/><br><br>
+			<label><h3>First Name</h3></label>
+            <input name="firstName" type="firstName"/><br><br>
+			<label><h3>Last Name</h3></label>
+            <input name="lastName" type="lastName"/><br><br>
+			<label><h3>Admin Password</h3></label>
+            <input name="adminPassword" type="adminPassword"/><br><br>
             <button type="submit" class="btn btn-all">Sign Up</button>
         </form>
     </body>

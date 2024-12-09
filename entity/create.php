@@ -1,18 +1,32 @@
 <?php
+require_once("../db.php");
 session_start();
+$error='';
 
 if(!isset($_SESSION['email']))
 {
     header('location: ../index.php');
-    die();
 }
 
 if(count($_POST)>0){
+    $email = $_SESSION['email'];
+    $stmt = $db->prepare('SELECT userID FROM users WHERE email = ?');
+    $stmt->execute([$email[0]]);
+    $userID = $stmt->fetch();
+    $temp = $_POST['content'];
+    $content = str_replace(["\r", "\n"], " ", $temp);
+    $date_time = date('Y-m-d H:i:s');
+    if(strlen($error)==0){
+		$stmt = $db->prepare('INSERT INTO posts(userID, title, contents, date_time) VALUES (?, ?, ?, ?)');
+		$stmt->execute([$userID[0], $_POST['title'], $content, $date_time]);
+    }
+    header('location: index.php');
+    /*
     $fp=fopen('posts.csv.php','a+');
     fputs($fp,$_SESSION['email'].';'.date('m/d/Y').';'.$_POST['title'].';'.$_POST['content'].PHP_EOL);
     fclose($fp);
     header('location: index.php');
-    die();
+    die();*/
 }
 ?>
 
@@ -108,7 +122,7 @@ if(count($_POST)>0){
     
         <form method="POST">
             <label><h3>Title</h3></label><br />
-            <textarea name="title" rows="1" cols="50" required="required"></textarea>
+            <textarea name="title" rows="1" cols="50"  required="required"></textarea>
             <br /><br />
             <label><h3>Contents</h3></label><br />
 		    <textarea name="content" rows="9" cols="50" required="required"></textarea>

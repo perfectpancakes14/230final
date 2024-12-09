@@ -57,6 +57,7 @@ session_start();
                                 <h2 class="slide-title">Karen Social</h2>
                                 <a href="signIn.php" class="btn btn-all">Sign In</a>
 								<a href="signUp.php" class="btn btn-all">Sign Up</a>
+								<a href="entity/index.php" class="btn btn-all">Guest</a>
                             </div>
 						</div>
                     </div>
