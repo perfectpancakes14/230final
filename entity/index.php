@@ -1,5 +1,5 @@
 <?php
-require_once("db.php");
+require_once("../db.php");
 session_start();
 ?>
 <html class="no-js" lang="zxx">
@@ -101,15 +101,16 @@ session_start();
                 <div class="row mtn-50">
                     <!-- demo single item start -->
 					<?php 
-					$stmt = $db->prepare("SELECT TOP 9 title FROM posts ORDER BY DESC")
-                    $counter = 0;
-                    $mostRecent = count($posts)-1;
-                    while($counter<9 && array_key_exists($mostRecent,$posts)){
-					//for($i=0;$i<9;$i++){ 
+					$stmt = $db->query("SELECT COUNT(postID) FROM posts ORDER BY postID DESC LIMIT 9");
+                    $count = $stmt->fetch();
+                    $stmt = $db->query("SELECT postID, date_time, title FROM posts ORDER BY postID DESC LIMIT 9");
+                    $posts = $stmt->fetchAll();
+                    $counter = $count[0];
+                    for ($i = 0; $i<$counter;$i++){
 					?>
                     <div class="col-md-4">
                         <div class="demo-preview-item mt-50">
-                            <?php echo "<a href=detail.php?post_id=".$mostRecent.">"?>
+                            <a href ="detail.php?post-id=<?=$post[$i][0]?>">
                                 <div class="demo-item">
                                     <div class="dots">
                                         <div class="dot"></div>
@@ -117,7 +118,7 @@ session_start();
                                         <div class="dot"></div>
                                     </div>
                                     <div class="demo-item__thumb">
-                                        <p><?=$posts[$mostRecent][1]?></p>
+                                        <p><?=$posts[$i][1]?></p>
                                         <div class="overlay">
                                             <div class="btn btn-demo">
                                                 View Post
@@ -125,7 +126,7 @@ session_start();
                                         </div>
                                     </div>
                                     <div class="demo-item__info">
-                                        <h6><?=$posts[$mostRecent][2]?></h6>
+                                        <h6><?=$posts[$i][2]?></h6>
                                     </div>
                                 </div>
                             </a>
@@ -133,8 +134,6 @@ session_start();
                     </div>
                     <!-- demo single item end -->
 					<?php
-                        $mostRecent--;
-                        $counter++;
                      }; 
                      ?>
                 </div>

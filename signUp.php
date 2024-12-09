@@ -24,25 +24,6 @@ if(count($_POST)>0){
 			header('location: entity/index.php');
 			die();
 		}
-			
-        /*$fp=fopen('users.csv.php','r');
-        while(!feof($fp)){
-            $line=fgets($fp);
-            $line=explode(';',$line);
-            if(count($line)==2 && $_POST['email']==$line[0]){
-                $error='This user is already registered.';
-                echo $error;
-                break;
-            }    
-        }
-        fclose($fp);*/
-        if(strlen($error)==0){
-            $fp=fopen('users.csv.php','a+');
-            fputs($fp,$_POST['email'].';'.password_hash($_POST['password'],PASSWORD_DEFAULT).PHP_EOL);
-            fclose($fp);
-            header('location: entity/index.php');
-            die();
-        }
     }
 }
 ?>
