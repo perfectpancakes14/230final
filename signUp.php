@@ -5,7 +5,7 @@ if(count($_POST)>0){
     if(!isset($_POST['email'][0])) die('You must enter your email.');
     if(!isset($_POST['password'][0])) die('You must enter your password.');
     if(strlen($error)==0){
-        $fp=fopen('users.csv.php','r');
+        /*$fp=fopen('users.csv.php','r');
         while(!feof($fp)){
             $line=fgets($fp);
             $line=explode(';',$line);
@@ -15,7 +15,7 @@ if(count($_POST)>0){
                 break;
             }    
         }
-        fclose($fp);
+        fclose($fp);*/
         if(strlen($error)==0){
             $fp=fopen('users.csv.php','a+');
             fputs($fp,$_POST['email'].';'.password_hash($_POST['password'],PASSWORD_DEFAULT).PHP_EOL);
