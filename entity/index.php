@@ -101,12 +101,12 @@ session_start();
                 <div class="row mtn-50">
                     <!-- demo single item start -->
 					<?php 
-					$stmt = $db->query("SELECT COUNT(postID) FROM posts ORDER BY postID DESC LIMIT 9");
-                    $count = $stmt->fetch();
+					//$stmt = $db->query("SELECT COUNT(postID) FROM posts ORDER BY postID DESC LIMIT 9");
+                    //$count = $stmt->fetch();
                     $stmt = $db->query("SELECT postID, date_time, title FROM posts ORDER BY postID DESC LIMIT 9");
                     $post = $stmt->fetchAll();
-                    $counter = $count[0];
-                    for ($i = 0; $i<$counter;$i++){
+                    //$counter = $count[0];
+                    for ($i = 0; $i<9;$i++){
 					?>
                     <div class="col-md-4">
                         <div class="demo-preview-item mt-50">
