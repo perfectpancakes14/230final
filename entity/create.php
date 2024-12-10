@@ -128,6 +128,7 @@ if(count($_POST)>0){
 		    <textarea name="content" rows="9" cols="50" required="required"></textarea>
             <br /><br />
             <button type="submit" class="btn btn-all">Post</button>
+            <a href = "index.php" class="btn btn-all">Return to Feed</a>
         </form> 
 
     </body>

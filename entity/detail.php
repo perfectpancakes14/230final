@@ -118,8 +118,8 @@ array_splice($posts, count($posts)-1, 1);*/
 								
 								<p><?=$post2[4]?></p>
 								<?php if($admin == 1 || isset($_SESSION['email']) && $_SESSION['email'][0] == $email) {?>
-									<a href=<?php echo "edit.php?post_id=".$i?> class="btn btn-all">edit post</a>
-									<a href=<?php echo "delete.php?post_id=".$i?> class="btn btn-all">delete post</a>
+									<a href=<?php echo "edit.php?post_id=".$i?> class="btn btn-all">Edit post</a>
+									<a href=<?php echo "delete.php?post_id=".$i?> class="btn btn-all">Delete post</a>
 								<?php } ?>
                                 <a href="index.php" class="btn btn-all">Return to Feed</a>
                                 <?php
