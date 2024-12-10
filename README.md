@@ -11,3 +11,4 @@ test admin credentials:
 - Email: frondorfm2@mymail.nku.edu / Password: Filler123
 
 Youtube video link:
+https://youtu.be/jZHi6taVPDM
