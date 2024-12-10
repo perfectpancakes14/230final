@@ -23,7 +23,7 @@ if(count($_POST)>0){
 		$stmt = $db->prepare('UPDATE comments SET contents = ? WHERE commentID = ?');
 		$stmt->execute([$content, $i]);
     }
-    header('location: index.php');
+    header('location: detail.php?post_id='.$i);
     //die();
 
 
@@ -149,10 +149,10 @@ if(count($_POST)>0){
 
         <form method="POST">
             
-            <label><h3>Contents</h3></label><br />
+            <label><h3>Comment</h3></label><br />
 			<textarea name="content" rows="9" cols="50" placeholder="<?= $post[0] ?>" required="required"></textarea>
             <br /><br />
-            <button type="submit" class="btn btn-all">Edit Post</button>
+            <button type="submit" class="btn btn-all">Edit Comment</button>
         </form> 
 
     </body>

@@ -21,9 +21,15 @@ if(count($_POST)>0){
 			else{
 				$addUser->execute([$_POST['email'],$_POST['password'],$_POST['firstName'],$_POST['lastName'],0]);
 			}
-			header('location: entity/index.php');
-			die();
-		}
+            $stmt = $db->prepare('SELECT email FROM users WHERE email = ? AND password = ?');
+		    $stmt->execute([$_POST['email'],$_POST['password']]);
+		    $user = $stmt->fetch();
+		    if($user!=""){
+			    $_SESSION['email']=$user;
+			    header('location: entity/index.php');
+			    die();
+		    }
+        }
     }
 }
 ?>

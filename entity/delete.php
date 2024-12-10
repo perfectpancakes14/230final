@@ -10,6 +10,10 @@ require_once("../db.php");
         header('location: ../index.php');
         die();
     }
+    $stmt = $db->prepare('DELETE FROM users_r_posts WHERE postID = ?');
+    $stmt->execute([$i]);
+    $stmt = $db->prepare('DELETE FROM comments WHERE postID = ?');
+    $stmt->execute([$i]);
     $stmt = $db->prepare('DELETE FROM posts WHERE postID = ?');
     $stmt->execute([$i]);
     /*$posts = [];

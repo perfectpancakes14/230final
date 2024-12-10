@@ -77,7 +77,7 @@ session_start();
                                 <h4 class="slide-subtitle pb-3">Blogging and Social Media Site</h4>
                                 <h2 class="slide-title">Karen Social</h2>
 								<?php
-								if(isset($_SESSION['email'])){ ?>
+								if(isset($_SESSION['email'][0])){ ?>
                                 <a href="create.php" class="btn btn-all">Create Post</a>
 								<?php } ?>
                             </div>
@@ -104,13 +104,13 @@ session_start();
 					$stmt = $db->query("SELECT COUNT(postID) FROM posts ORDER BY postID DESC LIMIT 9");
                     $count = $stmt->fetch();
                     $stmt = $db->query("SELECT postID, date_time, title FROM posts ORDER BY postID DESC LIMIT 9");
-                    $posts = $stmt->fetchAll();
+                    $post = $stmt->fetchAll();
                     $counter = $count[0];
                     for ($i = 0; $i<$counter;$i++){
 					?>
                     <div class="col-md-4">
                         <div class="demo-preview-item mt-50">
-                            <a href ="detail.php?post-id=<?=$post[$i][0]?>">
+                            <a href ="detail.php?post_id=<?=$post[$i][0]?>">
                                 <div class="demo-item">
                                     <div class="dots">
                                         <div class="dot"></div>
@@ -118,7 +118,7 @@ session_start();
                                         <div class="dot"></div>
                                     </div>
                                     <div class="demo-item__thumb">
-                                        <p><?=$posts[$i][1]?></p>
+                                        <p><?=$post[$i][1]?></p>
                                         <div class="overlay">
                                             <div class="btn btn-demo">
                                                 View Post
@@ -126,7 +126,7 @@ session_start();
                                         </div>
                                     </div>
                                     <div class="demo-item__info">
-                                        <h6><?=$posts[$i][2]?></h6>
+                                        <h6><?=$post[$i][2]?></h6>
                                     </div>
                                 </div>
                             </a>

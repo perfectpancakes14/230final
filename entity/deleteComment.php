@@ -13,8 +13,9 @@ require_once("../db.php");
     $stmt = $db->prepare('SELECT posts.postID FROM posts INNER JOIN comments ON comments.postID=posts.postID WHERE commentID = ?');
     $stmt->execute([$i]);
     $post = $stmt->fetch();
-    print_r($post);
-
+    //print_r($post);
+    $stmt = $db->prepare('DELETE FROM users_r_comments WHERE commentID = ?');
+    $stmt->execute([$i]);
     $stmt = $db->prepare('DELETE FROM comments WHERE commentID = ?');
     $stmt->execute([$i]);
     /*$posts = [];

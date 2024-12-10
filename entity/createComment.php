@@ -21,7 +21,7 @@ if(count($_POST)>0){
 		$stmt = $db->prepare('INSERT INTO comments(postID, userID, contents, date_time) VALUES (?, ?, ?, ?)');
 		$stmt->execute([$i, $userID[0], $content, $date_time]);
     }
-    header('location: index.php');
+    header('location: detail.php?post_id='.$i);
     /*
     $fp=fopen('posts.csv.php','a+');
     fputs($fp,$_SESSION['email'].';'.date('m/d/Y').';'.$_POST['title'].';'.$_POST['content'].PHP_EOL);

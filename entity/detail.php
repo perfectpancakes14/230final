@@ -1,8 +1,33 @@
 <?php 
+require_once("../db.php");
 session_start();
 $i = $_GET['post_id'];
 
-$posts = [];
+$hasName = false;
+$stmt = $db->prepare('SELECT users.firstName, users.lastName FROM users INNER JOIN posts ON users.userID = posts.userID WHERE postID = ?');
+$stmt->execute([$i]);
+$name = $stmt->fetch();
+if($name[0] == null AND $name[1] == null)
+{
+    $stmt = $db->prepare('SELECT users.email, posts.title, posts.contents, posts.date_time FROM users INNER JOIN posts ON users.userID = posts.userID WHERE postID = ?');
+    $stmt->execute([$i]);
+    $post1 = $stmt->fetch();
+    $email = $post1[0];
+}
+else{
+    $stmt = $db->prepare('SELECT users.email, users.firstName, users.lastName, posts.title, posts.contents, posts.date_time FROM users INNER JOIN posts ON users.userID = posts.userID WHERE postID = ?');
+    $stmt->execute([$i]);
+    $post2 = $stmt->fetch();
+    $email = $post2[0];
+    $hasName = true;
+}
+$stmt = $db->prepare('SELECT isAdmin FROM users WHERE email = ?');
+$stmt->execute([$_SESSION['email'][0]]);
+$temp = $stmt->fetch();
+$admin = $temp[0];
+
+
+/*$posts = [];
 $fp=fopen('posts.csv.php','r');
 while(!feof($fp)){
     $line=fgets(($fp));
@@ -10,7 +35,7 @@ while(!feof($fp)){
     array_push($posts, $line);
 }
 array_splice($posts,0,1);
-array_splice($posts, count($posts)-1, 1);
+array_splice($posts, count($posts)-1, 1);*/
 
 
 ?>
@@ -81,16 +106,45 @@ array_splice($posts, count($posts)-1, 1);
     <!-- end Header Area -->
     <main>
         <!-- section start -->
-        <section class="main-menu-wrapper section-padding pb-10">
+
+        <?php if($hasName == true){?>
+            <section class="main-menu-wrapper section-padding pb-10">
                 <div class="container custom-container">
                     <div class="row align-items-center justify-content-between">
                         <div class="col-6">
                             <div class="hero-slider-content">
-                                <h4 class="slide-subtitle pb-3"><?='Authored by '.$posts[$i][0].' on '.$posts[$i][1]?></h4>
-                                <h2 class="slide-title"><?=$posts[$i][2]?></h2>
+                                <h4 class="slide-subtitle pb-3"><?='Authored by '.$post2[1].' '.$post2[2].' on '.$post2[5]?></h4>
+                                <h2 class="slide-title"><?=$post2[3]?></h2>
 								
-								<p><?=$posts[$i][3]?></p>
-								<?php if(isset($_SESSION['email']) && $_SESSION['email'] == $posts[$i][0]) {?>
+								<p><?=$post2[4]?></p>
+								<?php if($admin == 1 || isset($_SESSION['email']) && $_SESSION['email'][0] == $email) {?>
+									<a href=<?php echo "edit.php?post_id=".$i?> class="btn btn-all">edit post</a>
+									<a href=<?php echo "delete.php?post_id=".$i?> class="btn btn-all">delete post</a>
+								<?php } ?>
+                                <a href="index.php" class="btn btn-all">Return to Feed</a>
+                                <?php
+                                $stmt = $db->prepare('SELECT COUNT(*) FROM users_r_posts WHERE postID = ?');
+                                $stmt->execute([$i]);
+                                $postLikeCount = $stmt->fetch();
+                                ?>
+                                <a href="postLike.php?post_id=<?=$i?>" class="btn btn-all">Like<?php echo " (".$postLikeCount[0].")"?></a>
+                            </div>
+						</div>
+                    </div>
+                </div>
+        </section>
+        <?php }
+        else{ ?>
+            <section class="main-menu-wrapper section-padding pb-10">
+                <div class="container custom-container">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-6">
+                            <div class="hero-slider-content">
+                                <h4 class="slide-subtitle pb-3"><?='Authored by '.$post1[0].' on '.$post1[3]?></h4>
+                                <h2 class="slide-title"><?=$post1[1]?></h2>
+								
+								<p><?=$post1[2]?></p>
+								<?php if(isset($_SESSION['email']) && $_SESSION['email'] == $email) {?>
 									<a href=<?php echo "edit.php?post_id=".$i?> class="btn btn-all">edit post</a>
 									<a href=<?php echo "delete.php?post_id=".$i?> class="btn btn-all">delete post</a>
 								<?php } ?>
@@ -100,6 +154,52 @@ array_splice($posts, count($posts)-1, 1);
                     </div>
                 </div>
         </section>
+        <?php }?>
+
+        <section class="main-menu-wrapper section-padding pb-10">
+                <div class="container custom-container">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-6">
+                            <div class="hero-slider-content">
+                                <h2>Comments</h2><br />
+                            <table border=1>
+                                <?php
+                                    $stmt = $db->prepare("SELECT COUNT(*) FROM comments WHERE postID = ?");
+                                    $stmt->execute([$i]);
+                                    $count = $stmt->fetch();
+                                    $stmt = $db->prepare("SELECT users.email, comments.contents, comments.commentID FROM users INNER JOIN comments ON users.userID = comments.userID WHERE postID = ?");
+                                    $stmt->execute([$i]);
+                                    $comment = $stmt->fetchAll();
+                                    for ($j = 0; $j<$count[0];$j++){
+                                ?>
+                                    <tr>
+                                        <td><h4><?php echo $comment[$j][0]?></h4></td>
+                                        <td><h4><?php echo $comment[$j][1] ?></h4></td>
+                                        <?php
+                                        
+                                        if($admin == 1 || isset($_SESSION['email']) && $_SESSION['email'][0] == $comment[$j][0]) {?>
+                                            <td><a href=<?php echo "editComment.php?comment_id=".$comment[$j][2]?> class="btn btn-all">Edit comment</a></td>
+                                            <td><a href=<?php echo "deleteComment.php?comment_id=".$comment[$j][2]?> class="btn btn-all">Delete comment</a></td>
+                                        <?php } 
+                                        
+                                        $stmt = $db->prepare('SELECT COUNT(*) FROM users_r_comments WHERE commentID = ?');
+                                        $stmt->execute([$comment[$j][2]]);
+                                        $commentLikeCount = $stmt->fetch();
+                                        ?>
+                                        <td><a href="commentLike.php?comment_id=<?=$comment[$j][2]?>" class="btn btn-all">Like<?php echo " (".$commentLikeCount[0].")"?></a></td>
+                                        
+                                    </tr>
+
+                                    <?php }?>
+                                </table>
+                                <a href="createComment.php?post_id=<?=$i?>" class="btn btn-all">Create Comment</a>
+                            </div>
+						</div>
+                    </div>
+                </div>
+        </section>
+        
+
 	</main>
 </body>
 </html>
