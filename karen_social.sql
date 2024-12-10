@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 08, 2024 at 12:46 AM
+-- Generation Time: Dec 10, 2024 at 04:36 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,15 +35,6 @@ CREATE TABLE `comments` (
   `date_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`commentID`, `postID`, `userID`, `contents`, `date_time`) VALUES
-(1, 1, 2, '?', '0000-00-00 00:00:00'),
-(2, 2, 2, '???', '0000-00-00 00:00:00'),
-(3, 3, 1, 'It\'s a Fire Emblem reference, you probably won\'t get it.', '0000-00-00 00:00:00');
-
 -- --------------------------------------------------------
 
 --
@@ -58,15 +49,6 @@ CREATE TABLE `posts` (
   `date_time` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `posts`
---
-
-INSERT INTO `posts` (`postID`, `userID`, `title`, `contents`, `date_time`) VALUES
-(1, 1, 'Title', 'This is a message from Lord Nergal. \"I await you on the Dread Isle.\"', '0000-00-00 00:00:00'),
-(2, 3, 'Title', 'This is a message from Lord Nergal. \"I await you on the Dread Isle.\"', '0000-00-00 00:00:00'),
-(3, 2, 'Title', 'What are you all saying?', '0000-00-00 00:00:00');
-
 -- --------------------------------------------------------
 
 --
@@ -77,8 +59,8 @@ CREATE TABLE `users` (
   `userID` int(10) UNSIGNED NOT NULL,
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `firstName` varchar(64) NOT NULL,
-  `lastName` varchar(64) NOT NULL,
+  `firstName` varchar(64) DEFAULT NULL,
+  `lastName` varchar(64) DEFAULT NULL,
   `isAdmin` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -87,9 +69,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `email`, `password`, `firstName`, `lastName`, `isAdmin`) VALUES
-(1, 'daviesm4@mymail.nku.edu', 'Filler123', 'David-Michael', 'Davies', 1),
+(1, 'daviesm4@mymail.nku.edu', 'Filler123', 'David-Michael', 'Davies', 0),
 (2, 'frondorfm2@mymail.nku.edu', 'Filler123', 'Emery', 'Frondorf', 1),
-(3, 'wattsl6@mymail.nku.edu', 'Filler123', 'Logan', 'Watts', 1);
+(9, 'wattsl6@mymail.nku.edu', 'Filler123', 'Logan', 'Watts', 0);
 
 -- --------------------------------------------------------
 
@@ -149,7 +131,8 @@ ALTER TABLE `users`
 ALTER TABLE `users_r_comments`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `userID` (`userID`),
-  ADD KEY `commentID` (`commentID`);
+  ADD KEY `commentID` (`commentID`),
+  ADD KEY `commentID_2` (`commentID`);
 
 --
 -- Indexes for table `users_r_posts`
@@ -167,31 +150,31 @@ ALTER TABLE `users_r_posts`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `commentID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `postID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `postID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `userID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `users_r_comments`
 --
 ALTER TABLE `users_r_comments`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `users_r_posts`
 --
 ALTER TABLE `users_r_posts`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables
